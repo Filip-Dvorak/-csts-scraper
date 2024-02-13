@@ -30,4 +30,11 @@ public class Profile {
             //handle exception
         }
     }
+    public double averageResult(){
+        double sum = 0;
+        for(Soutez soutez : Csts.getSouteze(this.idtClena)){
+            sum = sum + soutez.PoradiOd;
+        }
+        return sum/Csts.getSouteze(this.idtClena).size();
+    }
 }
