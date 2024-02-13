@@ -1,5 +1,9 @@
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.jsoup.nodes.Element;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -96,4 +100,15 @@ public class Csts {
             throw new RuntimeException(e);
         }
     }
+    public static void getNadchazejiciSouteze() {
+        try {
+            Document html = Jsoup.connect("https://www.csts.cz/cs/KalendarSoutezi/Seznam?OdData=02%2F01%2F2024%2000%3A00%3A00&DoData=05%2F31%2F2024%2000%3A00%3A00&Region=0").get();
+            Elements elements = html.select(".kalendar-box-2");
+            for (Element element : elements) {
+                System.out.println(element.select("plista-b").text());
+            }
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }}
 }
