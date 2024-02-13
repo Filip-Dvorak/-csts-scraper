@@ -105,7 +105,7 @@ public class Csts {
             Document html = Jsoup.connect("https://www.csts.cz/cs/KalendarSoutezi/Seznam?OdData=02%2F01%2F2024%2000%3A00%3A00&DoData=05%2F31%2F2024%2000%3A00%3A00&Region=0").get();
             Elements elements = html.select(".kalendar-box-2");
             for (Element element : elements) {
-                System.out.println(element.select("plista-b").text());
+                System.out.println(element.select(".plista-b").html());
             }
         }
         catch (Exception e){
