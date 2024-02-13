@@ -105,7 +105,21 @@ public class Csts {
             Document html = Jsoup.connect("https://www.csts.cz/cs/KalendarSoutezi/Seznam?OdData=02%2F01%2F2024%2000%3A00%3A00&DoData=05%2F31%2F2024%2000%3A00%3A00&Region=0").get();
             Elements elements = html.select(".kalendar-box-2");
             for (Element element : elements) {
-                System.out.println(element.select(".plista-b").html());
+                String htmlString =element.select(".plista-b").html();
+
+                String regex = "/cs/KalendarSoutezi/SeznamPrihlasenych/(\\d++)";
+
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(htmlString);
+
+                while (matcher.find()) {
+                    Document html2 = Jsoup.connect("https://www.csts.cz/cs/KalendarSoutezi/SeznamPrihlasenych/" + matcher.group(1)).get();
+                    Element h2 = html2.selectFirst("h2");
+                    System.out.println(h2.text());
+                    Elements categories = html2.select(".pso-box1");
+
+                }
+
             }
         }
         catch (Exception e){
