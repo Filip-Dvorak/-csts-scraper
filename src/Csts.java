@@ -115,8 +115,12 @@ public class Csts {
                 while (matcher.find()) {
                     Document html2 = Jsoup.connect("https://www.csts.cz/cs/KalendarSoutezi/SeznamPrihlasenych/" + matcher.group(1)).get();
                     Element h2 = html2.selectFirst("h2");
-                    System.out.println(h2.text());
                     Elements categories = html2.select(".pso-box1");
+                    for (Element category : categories) {
+                        if(category.select(".pso-box2").html().contains("Dospělí-B-LAT")){
+                            System.out.println(h2.text());
+                        }
+                    }
 
                 }
 
