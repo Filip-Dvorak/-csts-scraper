@@ -30,11 +30,24 @@ public class Profile {
             //handle exception
         }
     }
+    public double averageResult(String kat){
+        double sum = 0;
+        double count = 0;
+        for(Soutez soutez : Csts.getSouteze(this.idtClena)) {
+            if (soutez.Kategorie.equals(kat)) {
+                sum = sum + soutez.PoradiOd;
+                count ++;
+            }
+        }
+        return sum/count;
+    }
     public double averageResult(){
         double sum = 0;
-        for(Soutez soutez : Csts.getSouteze(this.idtClena)){
-            sum = sum + soutez.PoradiOd;
+        double count = 0;
+        for(Soutez soutez : Csts.getSouteze(this.idtClena)) {
+                sum = sum + soutez.PoradiOd;
+                count ++;
         }
-        return sum/Csts.getSouteze(this.idtClena).size();
+        return sum/count;
     }
 }
