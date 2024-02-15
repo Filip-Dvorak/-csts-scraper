@@ -118,7 +118,10 @@ public class Csts {
                     Elements categories = html2.select(".pso-box1");
                     for (Element category : categories) {
                         if(category.select(".pso-box2").html().contains("Dospělí-B-LAT")){
+
                             System.out.println(h2.text());
+                            System.out.println(category.select(".pso-box2").text());
+                            System.out.println(category.select("table").html());
                         }
                     }
 
@@ -128,5 +131,6 @@ public class Csts {
         }
         catch (Exception e){
             throw new RuntimeException(e);
-        }}
+        }
+    }
 }

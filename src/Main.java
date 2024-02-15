@@ -8,6 +8,10 @@ public class Main {
         Profile jaroslav = new Profile("Jaroslav", "Požár");
         Profile ondrej =  new Profile("Ondřej", "Suchánek");
         Profile lubomír = new Profile("Lubomír", "Štecha");
+        Profile azulin = new Profile("Anežka", "Augustinová");
+        Profile filip = new Profile("Filip", "Süsmilich");
+
+        System.out.println(filip.averageResult("Dospělí-B-LAT"));
 
         Csts.getNadchazejiciSouteze();
     }
