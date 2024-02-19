@@ -1,6 +1,6 @@
 import java.util.List;
 
 public class OuterObject {
-        List<Soutez> Items;
+        List<VysledkySoutezi> Items;
         int Count;
 }

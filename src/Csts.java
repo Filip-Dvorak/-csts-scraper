@@ -1,5 +1,4 @@
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -9,20 +8,50 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static jdk.internal.icu.lang.UCharacter.getType;
-
 public class Csts {
+    // Helper method to get first name
+    private static String getFirstName(String fullName) {
+        return fullName.split("\\s+")[0];
+    }
+
+    // Helper method to get last name
+    private static String getLastName(String fullName) {
+        return fullName.split("\\s+")[1];
+    }
+    private static Set<Par> getCouples(String html){
+        String htmlContent = html; // Replace with your actual HTML content
+        Set<Par> prihlasenePary = new HashSet<>();
+        Document doc = Jsoup.parse(htmlContent);
+        Elements rows = doc.select("tr[class='']"); // Select rows with class=''
+
+        for (Element row : rows) {
+            Elements columns = row.select("td");
+
+            // Extract data from columns
+            String partnerName = columns.get(0).text();
+            String partnerkaName = columns.get(1).text();
+            String klubName = columns.get(2).text();
+
+            // Create Profile objects
+            Profile partner = new Profile(getFirstName(partnerName), getLastName(partnerName));
+            Profile partnerka = new Profile(getFirstName(partnerkaName), getLastName(partnerkaName));
+            Klub klub = new Klub(klubName);
+
+            // Create Par object
+            Par par = new Par(partner, partnerka, klub);
+            prihlasenePary.add(par);
+
+            System.out.println(par);
+        }
+        return prihlasenePary;
+    }
     public static String getProfileIDT(String jmeno, String prijmeni) {
         try {
             URL url = new URL("https://www.csts.cz/cs/Clenove/Hledat?registrovane=True");
@@ -78,7 +107,7 @@ public class Csts {
         return null;
     }
 
-    public static List<Soutez> getSouteze(String idt) {
+    public static List<VysledkySoutezi> getSouteze(String idt) {
         try {
             InputStream input;
             input = new URL("https://www.csts.cz/api/evidence/clenove/detail-clena/vysledky-soutezi/" + idt + "?%24count=true&%24skip=0&%24top=20&%24orderby=Datum%20desc").openStream();
@@ -87,7 +116,7 @@ public class Csts {
             OuterObject outerObject = gson.fromJson(json, OuterObject.class);
 
             // Access the "Items" array and convert it to a list
-            List<Soutez> soutezeList = outerObject.Items;
+            List<VysledkySoutezi> soutezeList = outerObject.Items;
             for (int i = 20; i < outerObject.Count; i = i + 20) {
                 input = new URL("https://www.csts.cz/api/evidence/clenove/detail-clena/vysledky-soutezi/" + idt + "?%24count=true&%24skip=" + i + "&%24top=20&%24orderby=Datum%20desc").openStream();
                 json = new Scanner(input).useDelimiter("\\A").next();
@@ -102,6 +131,8 @@ public class Csts {
     }
     public static void getNadchazejiciSouteze() {
         try {
+            Set<Soutez> nadchazejiciSouteze = new HashSet<Soutez>();
+            Set<Par> prihlasenePary = new HashSet<Par>();
             Document html = Jsoup.connect("https://www.csts.cz/cs/KalendarSoutezi/Seznam?OdData=02%2F01%2F2024%2000%3A00%3A00&DoData=05%2F31%2F2024%2000%3A00%3A00&Region=0").get();
             Elements elements = html.select(".kalendar-box-2");
             for (Element element : elements) {
@@ -122,6 +153,8 @@ public class Csts {
                             System.out.println(h2.text());
                             System.out.println(category.select(".pso-box2").text());
                             System.out.println(category.select("table").html());
+                            prihlasenePary = getCouples(category.select("table").html());
+                            System.out.println(prihlasenePary);
                         }
                     }
 

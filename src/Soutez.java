@@ -1,10 +1,12 @@
+import java.util.Map;
+import java.util.Set;
+
 public class Soutez {
-    String Id;
-    String Datum;
-    String Nazev;
-    String Misto;
-    String Kategorie;
-    int PoradiOd;
-    int PoradiDo;
-    String PartnerIdt;
+    public String nazev;
+    public Map<String, Set<Par>> kategorie;
+
+    public Soutez(String nazev ,Map<String, Set<Par>> kategorie) {
+        this.kategorie = kategorie;
+        this.nazev = nazev;
+    }
 }

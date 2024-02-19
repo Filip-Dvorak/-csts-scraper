@@ -33,7 +33,7 @@ public class Profile {
     public double averageResult(String kat){
         double sum = 0;
         double count = 0;
-        for(Soutez soutez : Csts.getSouteze(this.idtClena)) {
+        for(VysledkySoutezi soutez : Csts.getSouteze(this.idtClena)) {
             if (soutez.Kategorie.equals(kat)) {
                 sum = sum + soutez.PoradiOd;
                 count ++;
@@ -44,7 +44,7 @@ public class Profile {
     public double averageResult(){
         double sum = 0;
         double count = 0;
-        for(Soutez soutez : Csts.getSouteze(this.idtClena)) {
+        for(VysledkySoutezi soutez : Csts.getSouteze(this.idtClena)) {
                 sum = sum + soutez.PoradiOd;
                 count ++;
         }
